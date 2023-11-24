@@ -13,8 +13,8 @@
   <hr>
   <h4>Запуск и использование</h4>
   <ol>
-    <li><a href="https://github.com/YarMinator-official/BETTER-than-MES_BOT/archive/refs/heads/main.zip">Скачать репозиторий</a> бота</li>
-    <li>Разархивировать репозиторий</li>
+    <li><a href="https://github.com/YarMinator-official/BETTER-than-MES_BOT/archive/refs/heads/main.zip">Скачать последнюю версию бота</a></li>
+    <li>Разархивировать ZIP-архив</li>
     <li>Установить библиотеки school_mos и pyTelegramBotAPI через PowerShell (<code>pip install school-mos</code> ; <code>pip install pyTelegramBotAPI</code>) </li>
     <li>Открыть файл <code>main.py</code> и вставить токен Вашего бота в строку <code>TOKEN = "ваш токен"</code></li>
     <li>Запустить файл <code>main.py</code></li>
