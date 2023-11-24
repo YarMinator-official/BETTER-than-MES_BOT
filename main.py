@@ -81,7 +81,7 @@ def send_welcome(message):
         bot.send_message(message.chat.id, f"Добро пожаловать в систему, <b>{user.first_name} {user.last_name}</b>!")
         bot.send_message(message.chat.id, "Используйте меню команд для нахождения нужных функций.")
     except InvalidCredentialsError:
-        bot.send_message(message.chat.id, "Неверно указаны данные, либо у Вас включена двухфакторная аутентификация.\nПопробуйте снова!")
+        bot.send_message(message.chat.id, "Неверно указаны данные, либо у Вас <b>включена двухфакторная аутентификация.</b>\nПопробуйте снова!")
     except RequestError as RE:
         bot.send_message(message.chat.id, RE)
 
@@ -89,7 +89,7 @@ def send_welcome(message):
 def user_profile(message):
     user = users_dict.get(message.from_user.id)
     if user is None:
-        bot.send_message(message.chat.id, "Вы не авторизованы!")
+        bot.send_message(message.chat.id, "Вы не авторизованы!\nВоспользуйтесь /auth")
         return
     user_prof = (f"{user.last_name} {user.first_name} {user.middle_name}\n\n<b>Рождён</b>: {convert_to_non_retarded_date(user.birth_date)}\n<b>Родитель(и)</b>: {", ".join(user.parents)}\n<b>СНИЛС</b>: {user.snils}\n\n<b>{user.user_school}, {user.class_name} класс</b>")
     bot.send_message(message.chat.id, f"<b>Профиль пользователя:</b>\n{user_prof}\n")
@@ -108,7 +108,7 @@ def send_schedule(message):
         raw_schedule = user.schedule.get_by_date()
         text = parse_schedule(raw_schedule)
     except (RequestError, NullFieldError):
-        text = "На указанную дату ничего не найдено!"
+        text = "\n<b>На указанную дату ничего не найдено!</b>"
     bot.send_message(message.chat.id, f"{date2send}\n{text}", reply_markup=schedule_inline)
 
 @bot.message_handler(commands=["trimester"])
@@ -119,7 +119,7 @@ def send_trimestr_marks(message):
         return
     raw_trimestr_marks = user.marks.get_per_trimester()
     if raw_trimestr_marks is None:
-        bot.send_message(message.chat.id, "У Вас нет оценок за аттестационные периоды!")
+        bot.send_message(message.chat.id, "У Вас пока <b>нет оценок</b> за аттестационные периоды!")
     else:
         text = parse_trimester(raw_trimestr_marks)
         bot.send_message(message.chat.id, f"Аттестационный период 1\n\n{text}", reply_markup=trimester_marks_inline)
@@ -136,7 +136,7 @@ def send_hw(message):
         raw_hw = user.homework.get_by_date(0)
         text = parse_homework(raw_hw)
     except (RequestError, NullFieldError):
-        text = "На указанную дату ничего не найдено!"
+        text = "\n<b>На указанную дату ничего не найдено!</b>"
     bot.send_message(message.chat.id, f"{date2send}\n{text}", reply_markup=homework_inline)
 
 @bot.message_handler(commands=["marks"])
@@ -151,7 +151,7 @@ def send_marks(message):
         raw_marks = user.marks.get_by_date()
         text = parse_marks(raw_marks)
     except (RequestError, NullFieldError):
-        text = "На указанную дату ничего не найдено!"
+        text = "\n<b>На указанную дату ничего не найдено!</b>"
     bot.send_message(message.chat.id, f"{date2send}\n{text}", reply_markup=marks_inline)
 
 @bot.callback_query_handler(lambda call: call.data.startswith("next") or call.data.startswith("prev"))
@@ -178,7 +178,7 @@ def callback_handler(call):
             text = parse_homework(hw)
 
     except (RequestError, NullFieldError):
-        text = "На указанную дату ничего не найдено!"
+        text = "\n<b>На указанную дату ничего не найдено!</b>"
     bot.edit_message_text(chat_id=call.message.chat.id, message_id=call.message.message_id, text=f"{requested_date}\n{text}", reply_markup=call.message.reply_markup)
 
 @bot.callback_query_handler(lambda call: call.data.startswith("TRIMESTER"))
@@ -187,7 +187,7 @@ def trimester_callback_handler(call):
     user = users_dict.get(call.from_user.id)
     raw_trimester_data = user.marks.get_per_trimester(trimester_id - 1)
     if raw_trimester_data is None:
-        text = f"У вас нет оценок за аттестационный период {trimester_id}!"
+        text = f"У вас <b>нет оценок</b> за <b>аттестационный период {trimester_id}</b>."
     else:
         text = f"Аттестационный период {trimester_id}\n\n{parse_trimester(raw_trimester_data)}"
     try:
