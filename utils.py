@@ -53,8 +53,8 @@ def convert_date_format(datef: datetime.date):
 
 def create_inline_kb(callback_data):
     kb = types.InlineKeyboardMarkup()
-    next_button = types.InlineKeyboardButton(text="▶️", callback_data=f"next_{callback_data}")
-    prev_button = types.InlineKeyboardButton(text="◀️", callback_data=f"prev_{callback_data}")
+    next_button = types.InlineKeyboardButton(text="->", callback_data=f"next_{callback_data}")
+    prev_button = types.InlineKeyboardButton(text="<-", callback_data=f"prev_{callback_data}")
     kb.add(prev_button, next_button)
     return kb
 
